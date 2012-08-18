@@ -36,9 +36,8 @@ class Application(tk.Frame):
         self.piece_size = self.board_size / self.board_grid
 
     def create_widgets(self):
-        width = self.piece_size * self.board_grid
-        height = width
-        self.canvas = tk.Canvas(self, width=width, height=height)
+        args = dict(width=self.board_size, height=self.board_size)
+        self.canvas = tk.Canvas(self, **args)
         self.canvas.grid()
 
     def create_events(self):
