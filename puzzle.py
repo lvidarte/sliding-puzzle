@@ -60,13 +60,17 @@ class Application(tk.Frame):
     def slide(self, event):
         pieces = self.get_pieces_around()
         if event.keysym == 'Up' and pieces['bottom']:
-            self._slide(pieces['bottom'], pieces['center'], (0, -self.piece_size))
+            self._slide(pieces['bottom'], pieces['center'], 
+                        (0, -self.piece_size))
         if event.keysym == 'Down' and pieces['top']:
-            self._slide(pieces['top'], pieces['center'], (0, self.piece_size))
+            self._slide(pieces['top'], pieces['center'],
+                        (0, self.piece_size))
         if event.keysym == 'Left' and pieces['right']:
-            self._slide(pieces['right'], pieces['center'], (-self.piece_size, 0))
+            self._slide(pieces['right'], pieces['center'],
+                        (-self.piece_size, 0))
         if event.keysym == 'Right' and pieces['left']:
-            self._slide(pieces['left'], pieces['center'], (self.piece_size, 0))
+            self._slide(pieces['left'], pieces['center'],
+                        (self.piece_size, 0))
 
     def _slide(self, from_, to, coord):
         self.canvas.move(from_['id'], *coord)
@@ -110,7 +114,8 @@ class Application(tk.Frame):
                 y0 = y * self.piece_size
                 x1 = x0 + self.piece_size
                 y1 = y0 + self.piece_size
-                image = ImageTk.PhotoImage(self.image.crop((x0, y0, x1, y1)))
+                image = ImageTk.PhotoImage(
+                        self.image.crop((x0, y0, x1, y1)))
                 piece = {'id'     : None,
                          'image'  : image,
                          'pos_o'  : (x, y),
@@ -131,7 +136,8 @@ class Application(tk.Frame):
                     x1 = x * self.piece_size
                     y1 = y * self.piece_size
                     image = self.board[index]['image']
-                    id = self.canvas.create_image(x1, y1, image=image, anchor=tk.NW)
+                    id = self.canvas.create_image(
+                            x1, y1, image=image, anchor=tk.NW)
                     self.board[index]['id'] = id
                 index += 1
 
@@ -141,10 +147,14 @@ if __name__ == '__main__':
     from optparse import OptionParser
     parser = OptionParser(description="Sliding puzzle")
     parser.add_option('-g', '--board-grid', type=int, default=4,
-                      help="")
+                      help="(the minimum value is 3)")
     parser.add_option('-i', '--image', type=str, default='image.png',
                       help="path to image")
     args, _ = parser.parse_args()
+
+    if args.board_grid < 3:
+        args.board_grid = 3
+        print "Warning: using 3 for board-grid"
 
     app = Application(args.image, args.board_grid)
     app.master.title('Sliding puzzle')
