@@ -3,6 +3,7 @@
 
 import random
 import Tkinter as tk
+import tkMessageBox
 from PIL import Image, ImageTk
 
 
@@ -72,6 +73,8 @@ class Application(tk.Frame):
             self._slide(pieces['left'], pieces['center'],
                         (self.piece_size, 0))
 
+        self.check_status()
+
     def _slide(self, from_, to, coord):
         self.canvas.move(from_['id'], *coord)
         aux = to['pos_a']
@@ -124,6 +127,14 @@ class Application(tk.Frame):
                 self.board.append(piece)
 
         self.board[-1]['visible'] = False
+
+    def check_status(self):
+        for piece in self.board:
+            if piece['pos_a'] != piece['pos_o']:
+                return
+        title = 'Ganaste!'
+        message = 'Lo resolviste en %d movidas!' % self.steps
+        tkMessageBox.showinfo(title, message)
 
     def show(self):
         random.shuffle(self.board)
