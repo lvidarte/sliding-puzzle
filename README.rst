@@ -4,10 +4,13 @@ sliding-puzzle
 
 A simple sliding puzzle in Tkinter
 
-Requiere: python-imaging-tk
+Requirements:
+
+ * python-imaging-tk
 
 Usage:
 
+::
     ./puzzle.py
     ./puzzle.py --image=/path/to/image --board-grid=6
 
