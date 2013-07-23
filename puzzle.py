@@ -31,7 +31,6 @@ class Application(tk.Frame):
         if board_size > MAX_BOARD_SIZE:
             board_size = MAX_BOARD_SIZE
             image = image.resize((board_size, board_size), Image.ANTIALIAS)
-
         self.image = image
         self.board_size = board_size
         self.piece_size = self.board_size / self.board_grid
@@ -76,14 +75,11 @@ class Application(tk.Frame):
         if event.keysym in ('Right', 'l') and pieces['left']:
             self._slide(pieces['left'], pieces['center'],
                         (self.piece_size, 0))
-
         self.check_status()
 
     def _slide(self, from_, to, coord):
         self.canvas.move(from_['id'], *coord)
-        aux = to['pos_a']
-        to['pos_a'] = from_['pos_a']
-        from_['pos_a'] = aux
+        to['pos_a'], from_['pos_a'] = from_['pos_a'], to['pos_a']
         self.steps += 1
 
     def get_pieces_around(self):
@@ -92,14 +88,11 @@ class Application(tk.Frame):
                   'left'  : None,
                   'top'   : None,
                   'bottom': None}
-
         for piece in self.board:
             if not piece['visible']:
                 pieces['center'] = piece
                 break
-
         x0, y0 = pieces['center']['pos_a']
-
         for piece in self.board:
             x1, y1 = piece['pos_a']
             if y0 == y1 and x1 == x0 + 1:
@@ -110,7 +103,6 @@ class Application(tk.Frame):
                 pieces['top'] = piece
             if x0 == x1 and y1 == y0 + 1:
                 pieces['bottom'] = piece
-
         return pieces
 
     def create_board(self):
@@ -129,7 +121,6 @@ class Application(tk.Frame):
                          'pos_a'  : None,
                          'visible': True}
                 self.board.append(piece)
-
         self.board[-1]['visible'] = False
 
     def check_status(self):
@@ -142,7 +133,6 @@ class Application(tk.Frame):
 
     def show(self):
         random.shuffle(self.board)
-
         index = 0
         for x in xrange(self.board_grid):
             for y in xrange(self.board_grid):
@@ -158,7 +148,6 @@ class Application(tk.Frame):
 
 
 if __name__ == '__main__':
-
     from optparse import OptionParser
     parser = OptionParser(description="Sliding puzzle")
     parser.add_option('-g', '--board-grid', type=int, default=4,
