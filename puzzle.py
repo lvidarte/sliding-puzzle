@@ -46,7 +46,11 @@ class Application(tk.Frame):
         self.canvas.bind_all('<KeyPress-Down>', self.slide)
         self.canvas.bind_all('<KeyPress-Left>', self.slide)
         self.canvas.bind_all('<KeyPress-Right>', self.slide)
-        self.canvas.bind_all('<KeyPress-h>', self.help)
+        self.canvas.bind_all('<KeyPress-h>', self.slide)
+        self.canvas.bind_all('<KeyPress-j>', self.slide)
+        self.canvas.bind_all('<KeyPress-k>', self.slide)
+        self.canvas.bind_all('<KeyPress-l>', self.slide)
+        self.canvas.bind_all('<KeyPress-H>', self.help)
 
     def help(self, event):
         if getattr(self, '_img_help_id', None) is None:
@@ -60,16 +64,16 @@ class Application(tk.Frame):
 
     def slide(self, event):
         pieces = self.get_pieces_around()
-        if event.keysym == 'Up' and pieces['bottom']:
+        if event.keysym in ('Up', 'k') and pieces['bottom']:
             self._slide(pieces['bottom'], pieces['center'], 
                         (0, -self.piece_size))
-        if event.keysym == 'Down' and pieces['top']:
+        if event.keysym in ('Down', 'j') and pieces['top']:
             self._slide(pieces['top'], pieces['center'],
                         (0, self.piece_size))
-        if event.keysym == 'Left' and pieces['right']:
+        if event.keysym in ('Left', 'h') and pieces['right']:
             self._slide(pieces['right'], pieces['center'],
                         (-self.piece_size, 0))
-        if event.keysym == 'Right' and pieces['left']:
+        if event.keysym in ('Right', 'l') and pieces['left']:
             self._slide(pieces['left'], pieces['center'],
                         (self.piece_size, 0))
 
@@ -159,7 +163,7 @@ if __name__ == '__main__':
     parser = OptionParser(description="Sliding puzzle")
     parser.add_option('-g', '--board-grid', type=int, default=4,
                       help="(the minimum value is 3)")
-    parser.add_option('-i', '--image', type=str, default='image.png',
+    parser.add_option('-i', '--image', type=str, default='spider.png',
                       help="path to image")
     args, _ = parser.parse_args()
 
