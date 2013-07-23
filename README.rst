@@ -10,7 +10,8 @@ Requirements:
 
 Usage:
 
-::
+.. code:: bash
+
     ./puzzle.py
     ./puzzle.py --image=/path/to/image --board-grid=6
 
